@@ -31,7 +31,11 @@ schema:
           default: "public.ecr.aws/z9d2n7e1/nginx:1.21.0"
           minLength: 1
           maxLength: 200
-
+        indexhtmlcontent:
+          type: string
+          description: "The content of the home page"
+          default: ""
+          
     PipelineInputs:
       type: object
       description: "Pipeline input properties"

@@ -39,6 +39,9 @@ Resources:
       TaskRoleArn: !Ref "AWS::NoValue"
       ContainerDefinitions:
         - Name: '{{service_instance.name}}'
+          Environment:
+            - Name: INDEX_HTML_CONTENT
+              Value: '{{service_instance.inputs.indexhtmlcontent}}'
           Cpu: !FindInMap [TaskSize, {{service_instance.inputs.task_size}}, cpu]
           Memory: !FindInMap [TaskSize, {{service_instance.inputs.task_size}}, memory]
           Image: '{{service_instance.inputs.image}}'
