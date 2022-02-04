@@ -58,4 +58,22 @@ Congratulations, you have registered both your environment and service templates
 
 #### Deploying the enviroments [ PLATFORM ADMIN ]
 
-As a platform admin, you are going to deploy two environments. Go to `Templates/Environment` and click 
+As a platform admin, you are going to deploy two environments. On the main console, go to `Environments` and click `Create environment`.  Select the environment template you created above and click `Configure`. 
+
+Leave all the default and select an `Environment name` (this time you can pick what you want - we suggest you pick `VPC-ECSCluster-Env-Test`). In the `Environment roles` section let Proton create a new service role for you (unless you already have one). This is the role that Proton will use to provision all the resources in your environment template. 
+
+> Note that since Proton cannot know what you intend to deploy, this role will have an `Administrative` IAM policy associated. In a real deployment you probably want to downgrade that policy to only include the permissions this role requires. Click `Next`.
+
+This is where the Jinja magic starts to happen. You are asked to customize the parameters that the template allows you to customize. We can accept the defaults and click `Next` (unless you really feel you don't like those values). At the summary page click `Create`. 
+
+The `deployment status` will be `in progress` for a little while and then will report `Succeeded`. 
+
+Go through the `Create environment` workflow once more and configure a new environment called `VPC-ECSCluster-Env-Production`. This time you can pick the previously created IAM service role. 
+
+At the end of these two workflows you should see your environments ready: 
+
+![environments](../images/environments.png)
+
+Congratulations, you have created your `test` and `production` environments as a platform admin. 
+
+#### Deploying the service [ DEVELOPER ]
