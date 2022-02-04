@@ -14,7 +14,7 @@ These are some of the decisions (and opinions) we took in the tutorial:
 
 This is what we are going to implement in this tutorial: 
 
-![environments-services-basics](images/tutorial-diagram.png)
+![tutorial-diagram](images/tutorial-diagram.png)
 
 #### Prerequisites and housekeeping
 
@@ -28,7 +28,7 @@ Last but not least, before we switch to the Proton console, you need to setup an
 
 In an effort to simplify the tutorial, we are going to use an IAM administrative user/role to impersonate both a platform team admin as well as a developer. As a stretch goal, if you want, you may want to create two separate users with two separate AWS managed IAM policies (`AWSProtonFullAccess` and `AWSProtonDeveloperAccess`). In a production environment this would obviously be a best practice. 
 
-#### Importing the templates 
+#### Creating the templates [ PLATFORM ADMIN ]
 
 This repository includes both the `environment` and the `service` templates (respectively in the [vpc-ecscluster-env](./vpc-ecscluster-env) folder and in the [lb-fargate-svc](./lb-fargate-svc) folder). You can have a look at the structure there and learn more about the layout in the [Template bundles](https://docs.aws.amazon.com/proton/latest/adminguide/ag-template-bundles.html) section of the Proton documentation. 
 
@@ -42,5 +42,20 @@ In the `Template details` set `vpc-ecscluster-env` as the `Template name`.
 
 Set a `Template display name` for convenience, leave everything else as default and click `Create environment template`. 
 
-Within seconds you should be seing 
+Within a few seconds you should see a template version `1.0` appear. It's in `Draft` state. Click `Publish` and it will move into `Published` state. 
 
+You should see something like this: 
+
+![environment-template](images/environment-template.png)
+
+Now switch `Templates/Service templates` making sure to use `lb-fargate-svc` in the name of the template. Again, the name must match exactly. 
+
+The other thing you need to do here is to declare (in the `Compatible environment templates` section) which environment templates are compatible with this service template. Select the environment template you created above. 
+
+Before you click `Create service template` note the `Pipeline` option is flagged. That's the default and Proton expects to find the pipeline IaC files in this repository in the service template folder. You can optionally choose to have an external pipeline but we want to use the one that ships with our repository. Create the template and publish it like you did with the environment template. 
+
+Congratulations, you have registered both your environment and service templates as a platform admin. 
+
+#### Deploying the enviroments [ PLATFORM ADMIN ]
+
+As a platform admin, you are going to deploy two environments. Go to `Templates/Environment` and click 
