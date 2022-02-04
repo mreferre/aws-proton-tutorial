@@ -1,7 +1,7 @@
-### Introduction to Proton
+### Introduction to Amazon Proton
 
 #### What is Proton?
-Proton is a fully managed AWS service that helps engineering platform teams to build developer portals to streamline the SDLC (software development lifecycle). Proton has two main goals: increase developers' productivity and agility while allowing organizations to maintain the right level of control and governance. 
+[Proton](https://aws.amazon.com/proton/) is a fully managed AWS service that helps engineering platform teams to build developer portals to streamline the SDLC (software development lifecycle). Proton has two main goals: increase developers' productivity and agility while allowing organizations to maintain the right level of control and governance. 
 
 #### Who are the Proton customers? 
 Proton has two main actors:
@@ -104,7 +104,19 @@ These are some of the operational tenets Clare and Suresh came up with:
 
 ---- 
 
+This fictious situation goes beyond what the tutorial in this repository will walk you through. It is only intended to outline a very common scenario where customers are benefiting from adopting Proton to create the platform experience described above. 
+
 
 ### Introduction to the tutorial 
 
-This repository includes a tutorial that will guide users interested in Proton to appreciate the end-to-end workflows to deploy a service. As alluded in the Proton introduction, there are many options available in Proton. In addition to, obviously, an infinite spectrum of use cases and templates that can be used, there are options in the IaC you can use, how you upload your templates to Proton, how your render and deploy those templates, whether or not you want an embedded and managed application deployment pipeline and possibly more. A tutorial cannot cover all the possible combinations so we will take an opinionated approach to demonstrate these end-to-end workflows.    
+This repository includes a tutorial that will guide users interested in Proton to appreciate the end-to-end workflows to deploy a working Proton service. As alluded in the introduction, there are many options available in Proton. In addition to, obviously, an infinite spectrum of use cases and templates that you can author, there are options in the IaC you can use, how you upload your templates to Proton, how you render and deploy those templates, whether or not you want an embedded and managed application deployment pipeline and possibly more. A tutorial cannot cover all the possible combinations so we will take an opinionated approach to demonstrate these end-to-end workflows. 
+
+These are some of the decisions (and opinions) we took in the tutorial: 
+
+- we will be using CloudFormation as the IaC of choice for this exercise 
+- we will import the templates using the Git Sync method (as opposed to using the S3 upload mechanism)
+- we will deploy a service with an embedded pipeline
+- we want to focus the attention to the 
+- we will use a very basic existing application that will allow to de-focus from the potential application intricacies/peculiarities and rather focus on the Dev/Ops and CI/CD workflows in Proton
+
+| The tutorial needs to be as simple as possible (so not to spend too much time on it) but, at the same time, sophisticated enough to demonstrate a typical Proton workflow. In other words do not expect the "time-to-wow" of Amazon Proton to be any close to the "time-to-wow" of [AWS App Runner](https://aws.amazon.com/apprunner/) (they are two different services, with two different goals and objectives)
