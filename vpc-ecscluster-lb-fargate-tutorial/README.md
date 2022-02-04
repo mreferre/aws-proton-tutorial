@@ -76,4 +76,26 @@ At the end of these two workflows you should see your environments ready:
 
 Congratulations, you have created your `test` and `production` environments as a platform admin. 
 
+To recap, as an admin, you created both the environment and the service templates. Then you deployed two environments (test and production). You have prepared  the ground for a developer to start their workflows. Your job as a platform admin is done (for now).
+
 #### Deploying the service [ DEVELOPER ]
+
+If you have used specific IAM users/roles it is now a good time to switch to the developer role/user. As a developer you want to focus on building code and you may or may not know much about AWS. 
+
+Go to the Proton console and move to the `Services` page. Click `Create service` and you should see the template that the admin has created *for you*. It should be called something along the lines of `LB-Fargate-svc` (or the display name you picked above). Click `Configure`. Give your service a name. I am going to call it `super-awesome-web-app`. 
+
+In the `Service repository settings` you should select the fork of the application we specified in the prerequisite section. Now you are going to select how many instances of this application you want to deploy. We want two because we want to deploy one in the test environment and one in the production environment. 
+
+Fill the first instance with these parameters: 
+
+![environments](../images/service-instance-1.png)
+
+On the same page click on `Add new instance` and fill the second instance with similar parameters. Change only the following parameters: 
+- the `name` of the second instance should be `super-awesome-web-app-production`
+- the `environment` should be set to the production environment
+- its `indexhtmlcontent` variable should be `I am running in the production environment` 
+
+Leave everything else at the defaults, click `Next` and at the summary page click `Create`. 
+
+
+
