@@ -14,7 +14,7 @@ These are some of the decisions (and opinions) we took in the tutorial:
 
 This is what we are going to implement in this tutorial: 
 
-![tutorial-diagram](images/tutorial-diagram.png)
+![tutorial-diagram](../images/tutorial-diagram.png)
 
 #### Prerequisites and housekeeping
 
@@ -46,7 +46,7 @@ Within a few seconds you should see a template version `1.0` appear. It's in `Dr
 
 You should see something like this: 
 
-![environment-template](images/environment-template.png)
+![environment-template](../images/environment-template.png)
 
 Now switch `Templates/Service templates` making sure to use `lb-fargate-svc` in the name of the template. Again, the name must match exactly. 
 
