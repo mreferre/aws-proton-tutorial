@@ -119,4 +119,8 @@ These are some of the decisions (and opinions) we took in the tutorial:
 - we want to focus the attention to the 
 - we will use a very basic existing application that will allow to de-focus from the potential application intricacies/peculiarities and rather focus on the Dev/Ops and CI/CD workflows in Proton
 
-> The tutorial needs to be as simple as possible (so not to spend too much time on it) but, at the same time, sophisticated enough to demonstrate a typical Proton workflow. In other words do not expect the "time-to-wow" of Amazon Proton to be any close to the "time-to-wow" of [AWS App Runner](https://aws.amazon.com/apprunner/) (they are two different services, with two different goals and objectives)
+> Also note that we need to strike a balance: the tutorial needs to be as simple as possible (so not to spend too much time on it) but, at the same time, sophisticated enough to demonstrate a typical Proton workflow. Do not expect the "time-to-wow" of Amazon Proton to be any close to the "time-to-wow" of [AWS App Runner](https://aws.amazon.com/apprunner/). They are two different services, with two different goals and objectives. 
+
+This is what we are going to implement in this tutorial: 
+
+![environments-services-basics](images/tutorial-diagram.png)
