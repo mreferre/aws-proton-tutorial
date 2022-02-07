@@ -47,7 +47,7 @@ Discussing this level of details is beyond the scope of this short introduction 
 
 ### A typical real life use case for Proton
 
-Sometimes people find hard to relate to Proton and how it applies to real world problems. Some of them may think "can you not just use <xyz> instead of Proton?". Inspiring about when and why to use Proton is as important as explaining how Proton works. So before we move into the "how" (the tutorial), it could be useful to think about a fictious (yet very common) real life situation where Proton can help. 
+Sometimes people find hard to relate to Proton and how it applies to real world problems. Some of them may think "can you not just use <xyz> instead of Proton?" (where `xyz` could be standard CloudFormation, Copilot or other products). Inspiring about when and why to use Proton is as important as explaining how Proton works. So before we move into the "how" (the tutorial), it could be useful to think about a fictious (yet very common) real life situation where Proton can help (and where `xyz` alone couldn't cut it).  
 
 ---- 
 Pizza&Ananas is a high quality restaurant chain that has decided to double down investments for their on-line presence. They have a lot initiatives to build multiple applications to make their customers’ online experience better, including a new food delivery service and more. 
