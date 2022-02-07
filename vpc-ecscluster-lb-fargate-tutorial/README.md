@@ -133,8 +133,25 @@ This is the `production` endpoint:
 
 ![service-instance-production-endpoint](../images/service-instance-production-endpoint.png)
 
+> Note: in this tutorial you have created two service instances but you could have created three or more. Have you wondered how a supposedly static CFN pipeline IaC is able to adapt to a random number of service instances? This is where the power of Jinja comes in. If you explore the pipeline infrastructure IaC code in the repository you will note a `for` loop that iterates through all the instances configured in Proton and will render a pipeline that includes all service deployments! 
+
 Congratulations, you have deployed your first Proton service! 
 
-> In this tutorial you have created two service instances but you could have created three or more. Have you wondered how a supposedly static CFN pipeline IaC is able to adapt to a random number of service instances? This is where the power of Jinja comes in. If you explore the pipeline infrastructure IaC code in the repository you will note a `for` loop that iterates through all the instances configured in Proton and will render a pipeline that includes all service deployments! 
+#### Updating your application code [ DEVELOPER ]
 
+As a developer, you are now going to make an improvement to your application. You'd expect this improvement to be properly deployed in the various environments and eventually hitting production. 
+
+For this, locate the `startup.sh` file in your application repository and let's tweak the background color from `lightblue` to `green` in the line that customizes the `index.html` of the nginx web server. 
+
+This will kick off the pipeline which will build the container again, push it to ECR and update the Fargate services in both the `test` and `production` environments. 
+
+After a few minutes the pipeline should be completed. 
+
+This is the new `test` endpoint: 
+
+![service-instance-test-endpoint-new](../images/service-instance-test-endpoint-new.png)
+
+This is the new `production` endpoint:
+
+![service-instance-production-endpoint-new](../images/service-instance-production-endpoint-new.png)
 
