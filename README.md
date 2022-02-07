@@ -31,7 +31,9 @@ While Proton could act as a generic multi-purpose service catalog, Proton really
 - `Services`: they represent application infrastructure components that embed the best practices developers can leverage. Services (templates) are defined by platform admins and are deployed by the developers. Think of Fargate services, Lambdas and so forth. 
 - `Pipelines`: they represent, well ... pipelines. Similarly to services, pipeline (templates) are defined by platform admins and are deployed by the developers along with the service. Pipelines are an optional object and the developer is allowed to "bring their own" pipeline if so they wish. 
 
-What set Proton aside from a generic multi-purpose service catalog is that these objects are tied and aware of each others. For example, the pipelines (when included) are tied to specific services. Also, the service templates are declared compatible with specific environment templates so that when a developer deploys a specific service Proton allows the deployment only to envirinments that are compatible with that service.   
+While the `environments` resemble the outputs of generic service catalog (because you can pretty much package any stack in an environment), `services` and `templates` are very application specific constructs. For example, a required parameter for a service is a code repository and if you don't supply one you can't deploy a service. 
+
+These objects are tied and aware of each others. For example, the pipelines (when included) are tied to specific services. Also, the service templates are declared compatible with specific environment templates so that when a developer deploys a specific service Proton allows the deployment only to envirinments that are compatible with that service.   
 
 This is a simplistic visual representation of these objects: 
 

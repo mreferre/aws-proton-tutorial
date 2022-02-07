@@ -123,3 +123,8 @@ And this is how the `Pipeline` tab of your service should look like:
 
 Note how the developer has a feedback right inside the Proton console about the various pipeline stages with a link to the pipeline itself in the `Outputs` should they need further details. 
 
+If you explore the endpoints of each service instance you will see that ther content has been customized according to the settings of the `indexhtmlcontent` variable: 
+
+![service-instance-test-endpoint](../images/service-instance-test-endpoint.png)
+
+![service-instance-production-endpoint](../images/service-instance-pridction-endpoint.png)
