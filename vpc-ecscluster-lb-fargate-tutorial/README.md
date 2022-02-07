@@ -135,6 +135,6 @@ This is the `production` endpoint:
 
 Congratulations, you have deployed your first Proton service! 
 
-| In this tutorial you have created two service instances but you could have created three or more. Have you wondered how a supposedly static CFN pipeline IaC is able to adapt to a random number of service instances? This is where the power of Jinja comes in. If you explore the pipeline infrastructure IaC code in the repository you will note a `for` loop that iterates through all the instances configured in Proton and will render a pipeline that includes all service deployments! 
+> In this tutorial you have created two service instances but you could have created three or more. Have you wondered how a supposedly static CFN pipeline IaC is able to adapt to a random number of service instances? This is where the power of Jinja comes in. If you explore the pipeline infrastructure IaC code in the repository you will note a `for` loop that iterates through all the instances configured in Proton and will render a pipeline that includes all service deployments! 
 
 
