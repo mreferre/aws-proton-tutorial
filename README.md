@@ -111,4 +111,4 @@ This fictious situation goes beyond what the tutorial in this repository will wa
 
 ### Enough for talking - lets' get to the action 
 
-You are ready to start the tutorial. Move to [this page](./vpc-ecscluster-lb-fargate-tutorial/README.md) and enjoy the ride.
+You are ready to start the tutorial. Move to [this page](./vpc-ecscluster-lb-fargate-tutorial/chapter1/README.md) and enjoy the ride.

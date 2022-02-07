@@ -155,3 +155,6 @@ This is the new `production` endpoint:
 
 ![service-instance-production-endpoint-new](../images/service-instance-production-endpoint-new.png)
 
+#### Conclusions
+
+This concludes the basic tutorial for configuring Proton. We have covered both templates registration as well as templates deployment (environment and services). If you want to explore more about the value of Proton, especially when it comes to day2 operations, move to the [next chapter](../chapter2/README.md) of this tutorial.  
