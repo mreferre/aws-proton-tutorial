@@ -109,7 +109,7 @@ Leave everything else at the defaults, click `Next` and at the summary page clic
 
 | Please avoid using long names for the service and service instances because they are chained in the CFN template and there is a size limit. 
 
-This will take a few minutes to create the test and prod infrastructure (Proton service instances) that represent the load balanced Fargate service along with the pipeline that checks for changes on the application repository (the nginx custom application). Congratulations, you have deployed your first Proton service! 
+This will take a few minutes to create the test and prod infrastructure (Proton service instances) that represent the load balanced Fargate service along with the pipeline that checks for changes on the application repository (the nginx custom application). 
 
 | Important note on IAM roles: note that the developer does not need to specify an IAM role to assume for deploying the resources as part of the wizard. Proton will use the IAM roles the administrator has specified when deploying the environments these service instances bind to.   
 
@@ -123,8 +123,18 @@ And this is how the `Pipeline` tab of your service should look like:
 
 Note how the developer has a feedback right inside the Proton console about the various pipeline stages with a link to the pipeline itself in the `Outputs` should they need further details. 
 
-If you explore the endpoints of each service instance you will see that ther content has been customized according to the settings of the `indexhtmlcontent` variable: 
+If you explore the endpoints of each service instance you will see that ther content has been customized according to the settings of the `indexhtmlcontent` variable.
+
+This is the `test` endpoint: 
 
 ![service-instance-test-endpoint](../images/service-instance-test-endpoint.png)
 
+This is the `production` endpoint:
+
 ![service-instance-production-endpoint](../images/service-instance-production-endpoint.png)
+
+Congratulations, you have deployed your first Proton service! 
+
+| In this tutorial you have created two service instances but you could have created three or more. Have you wondered how a supposedly static CFN pipeline IaC is able to adapt to a random number of service instances? This is where the power of Jinja comes in. If you explore the pipeline infrastructure IaC code in the repository you will note a `for` loop that iterates through all the instances configured in Proton and will render a pipeline that includes all service deployments! 
+
+
