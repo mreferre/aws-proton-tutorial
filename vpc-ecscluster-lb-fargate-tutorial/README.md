@@ -127,4 +127,4 @@ If you explore the endpoints of each service instance you will see that ther con
 
 ![service-instance-test-endpoint](../images/service-instance-test-endpoint.png)
 
-![service-instance-production-endpoint](../images/service-instance-pridction-endpoint.png)
+![service-instance-production-endpoint](../images/service-instance-production-endpoint.png)
