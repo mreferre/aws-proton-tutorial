@@ -60,7 +60,7 @@ Congratulations, you have registered both your environment and service templates
 
 As a platform admin, you are going to deploy two environments. On the main console, go to `Environments` and click `Create environment`.  Select the environment template you created above and click `Configure`. 
 
-Leave all the default and select an `Environment name` (this time you can pick what you want - we suggest you pick `VPC-ECSCluster-Env-Test`). In the `Environment roles` section let Proton create a new service role for you (unless you already have one). This is the role that Proton will use to provision all the resources in your environment template. 
+Leave all the default and select an `Environment name` (this time you can pick what you want - we suggest you pick `VPC-ECSCluster-Env-Test`). In the `Environment roles` section let Proton create a new service role for you (unless you already have one). This is the role that Proton will use to provision all the resources defined in your environment template. 
 
 > Note that since Proton cannot know what you intend to deploy, this role will have an `Administrative` IAM policy associated. In a real deployment you probably want to downgrade that policy to only include the permissions this role requires. Click `Next`.
 
@@ -84,6 +84,10 @@ Please note at the bottom both the `Tags` that are used to track your deployment
 
 To recap, as an admin, you created both the environment and the service templates. Then you deployed two environments (test and production). You have prepared  the ground for a developer to start their workflows. Your job as a platform admin is done (for now).
 
+#### Configuring the CI/CD pipeline role [ PLATFORM ADMIN ]
+
+xxx 
+
 #### Deploying the service [ DEVELOPER ]
 
 If you have used specific IAM users/roles it is now a good time to switch to the developer role/user. As a developer you want to focus on building code and you may or may not know much about AWS. 
@@ -94,14 +98,28 @@ In the `Service repository settings` you should select the fork of the applicati
 
 Fill the first instance with these parameters: 
 
-![environments](../images/service-instance-1.png)
+![service-instance-test](../images/service-instance-test.png)
 
 On the same page click on `Add new instance` and fill the second instance with similar parameters. Change only the following parameters: 
 - the `name` of the second instance should be `production`
 - the `environment` should be set to the production environment
 - its `indexhtmlcontent` variable should be `I am running in the production environment` 
 
-Leave everything else at the defaults, click `Next` and at the summary page click `Create`. 
+Leave everything else at the defaults, click `Next` and at the summary page click `Create`.
 
+| Please avoid using long names for the service and service instances because they are chained in the CFN template and there is a size limit. 
 
+This will take a few minutes to create the test and prod infrastructure (Proton service instances) that represent the load balanced Fargate service along with the pipeline that checks for changes on the application repository (the nginx custom application). Congratulations, you have deployed your first Proton service! 
+
+| Important note on IAM roles: note that the developer does not need to specify an IAM role to assume for deploying the resources as part of the wizard. Proton will use the IAM roles the administrator has specified when deploying the environments these service instances bind to.   
+
+This is how the `Overview` tab of your service should look like: 
+
+![service-overview](../images/service-overview.png)
+
+And this is how the `Pipeline` tab of your service should look like: 
+
+![service-pipeline](../images/service-pipeline.png)
+
+Note how the developer has a feedback right inside the Proton console about the various pipeline stages with a link to the pipeline itself in the `Outputs` should they need further details. 
 
