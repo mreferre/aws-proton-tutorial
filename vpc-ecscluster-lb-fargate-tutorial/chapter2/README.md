@@ -145,7 +145,7 @@ We will start with the pipeline. Move to the `Pipeline` tab of your service, cli
 
 Within a few minutes the pipeline should be updated. If you explore its layout you will note that now there is indeed a manual approval right before the deployment of the `production` instance:
 
-
+![new-pipeline-with-approval](../../images/new-pipeline-with-approval.png)
 
 
 
