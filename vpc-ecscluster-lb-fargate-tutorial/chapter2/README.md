@@ -62,3 +62,6 @@ You  Congratulations, you have just updated your first Proton environment by add
 
 ### Updating the service template [ PLATFORM ADMIN ]
 
+Now that we have updated both the environment template and the environments themselves, let's explore updating the services. Let's assume we want to bring two changes to our service: 
+- we want to enable ECS exec so that developers can ECS exec into the tasks (for debugging purposes) 
+- we want to add a manual approval to the latest stage of the pipeline before deploying to production 
