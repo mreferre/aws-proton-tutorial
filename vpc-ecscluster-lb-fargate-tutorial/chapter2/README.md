@@ -82,7 +82,7 @@ First locate the `pipeline_infrastructure` CloudFormation template, navigate to 
 ``` 
 There is quite a bit of Jinja magic going on here. Here is what's happening. You just placed an action inside a `for` loop (`{%- for service_instance in service_instances %}`) that basically create a Deploy action per each service instance you created. What you added above is a piece of code that, basically, says "if the instance_name is called `production` then add an pipeline action that is a manual approval. The developer knows that when they create an instance called `production` Proton will add a manual approval gate. 
 
-> there is a bit of naming convention here that needs to be agreed between the developer and the platform team. The developers know that when they create an instance called `production` Proton will add a manual approval gate to the pipeline before deploying it. 
+> there is a bit of naming convention here that needs to be agreed between the developer and the platform team. The developers know that when they create an instance called `production` Proton will add a manual approval gate to the pipeline before deploying it. In retrospect, it may be possible to leverage variables that refers to `environments` names rather than `service instance` names to make it fully transparent for the user and allowing the platform team to enforce behaviour further.  
 
 Now let's enable [ECS exec](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-exec.html) for the service itself (the following changes are required to enable the ECS Exec feature). 
 
@@ -127,7 +127,7 @@ Last but not list add the `EnableExecuteCommand: true` in the `Service` resource
       ServiceName: '{{service.name}}_{{service_instance.name}}'
 ```
 
-> again, there is a bit of naming convention here that needs to be agreed between the developer and the platform team. The developers know that when they create a service instance called `test` Proton will add a parameter to the ECS tasks that will allow developers to exec into them for debugging purposes. Note that the developer doesn't need to know anything about how to make it happen. 
+> again, there is a bit of naming convention here that needs to be agreed between the developer and the platform team. The developers know that when they create a service instance called `test` Proton will add a parameter to the ECS tasks that will allow developers to exec into them for debugging purposes. Note that the developer doesn't need to know anything about how to make it happen. Similar to the change for the pipeline manual approval, it may make more sense to evaluate the `environment` names rather than the `service instance` names to enforce full control. 
 
 Now that you modified the service instance and pipeline properties, you can push the changes to GitHub. Proton should detect a new minor version that you can publish. That will become the new `recommended` version: 
 
@@ -191,3 +191,4 @@ An error occurred (InvalidParameterException) when calling the ExecuteCommand op
 ### Conclusions
 
 Congratulations, in this chapter you were able to get a better sense of the relationship between the platform admin and the developer for `Day 2` operations and, last but not least, a hint on the power of Jinja and the Proton rendering engine. 
+
