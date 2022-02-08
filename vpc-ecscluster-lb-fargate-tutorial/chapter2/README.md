@@ -131,6 +131,8 @@ Now that you modified the service instance and pipeline properties, you can push
 
 ![service-template-minor-ver](../../images/service-template-minor-ver.png)
 
+> The 1.1 minor version was an intermediate change that was made before this. If you followed the tutorial you should have your useful minor version with the changes above at `1.1`.   
+
 The work of the platform admin team is done here! 
 
 ### Updating the service [ DEVELOPER ]
@@ -146,6 +148,11 @@ We will start with the pipeline. Move to the `Pipeline` tab of your service, cli
 Within a few minutes the pipeline should be updated. If you explore its layout you will note that now there is indeed a manual approval right before the deployment of the `production` instance:
 
 ![new-pipeline-with-approval](../../images/new-pipeline-with-approval.png)
+
+Now you can update each of the service instances. Open the `test` instance detail page, click `Actions` and then `Update to latest minor version`: 
+
+![test-service-instance-update](../../images/test-service-instance-update.png)
+
 
 
 

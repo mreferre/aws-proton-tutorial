@@ -81,7 +81,9 @@ Resources:
     Type: AWS::ECS::Service
     DependsOn: LoadBalancerRule
     Properties:
-      {% if 'test' in service_instance.name %} EnableExecuteCommand: true {% endif %}
+      {% if 'test' in service_instance.name %} 
+      EnableExecuteCommand: true 
+      {% endif %}
       ServiceName: '{{service.name}}_{{service_instance.name}}'
       Cluster: '{{environment.outputs.ClusterName}}'
       LaunchType: FARGATE
