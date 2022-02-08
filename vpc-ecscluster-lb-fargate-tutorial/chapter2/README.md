@@ -62,6 +62,72 @@ You  Congratulations, you have just updated your first Proton environment by add
 
 ### Updating the service template [ PLATFORM ADMIN ]
 
-Now that we have updated both the environment template and the environments themselves, let's explore updating the services. Let's assume we want to bring two changes to our service: 
-- we want to enable ECS exec so that developers can ECS exec into the tasks (for debugging purposes) 
-- we want to add a manual approval to the latest stage of the pipeline before deploying to production 
+Now that we have updated both the environment template and the environments themselves, let's explore updating the services. Here is a situation that you, as a platform admin, may come across: you are getting requests from developers that they find it hard to debug their applications when they are running in the test environments (your policies do not allow you to enable exec'ing into containers in production but you can enable that for anything that is not production environments). Also, because of some incidents that have occurred over the last few weeks the business is requesting that all production deployments are gated by a manual approval from the business (this requires a change in the service pipeline). 
+
+First locate the `pipeline_infrastructure` CloudFormation template, navigate to the section where the pipeline `Actions` are declared and add the following text snippet between the action named `Build` and the action named `'Deploy-{{service_instance.name}}'`: 
+```
+{% if 'production' in service_instance.name %}
+        - Actions:
+            - ActionTypeId:
+                Category: Approval
+                Owner: AWS
+                Provider: Manual
+                Version: '1'
+              InputArtifacts: []
+              Name: Approval
+              RunOrder: 1
+          Name: Preproduction_Approval
+{% endif %}
+``` 
+There is quite a bit of Jinja magic going on here. Here is what's happening. You just placed an action inside a `for` loop (`{%- for service_instance in service_instances %}`) that basically create a Deploy action per each service instance you created. What you added above is a piece of code that, basically, says "if the instance_name is called `production` then add an pipeline action that is a manual approval. The developer knows that when they create an instance called `production` Proton will add a manual approval gate. 
+
+> there is a bit of naming convention here that needs to be agreed between the developer and the platform team. The developers know that when they create an instance called `production` Proton will add a manual approval gate to the pipeline before deploying it. 
+
+Now let's enable [ECS exec](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-exec.html) for the service itself (the following changes are required to enable the ECS Exec feature). 
+
+Locate the `instance_infrastructure` CloudFormation template and add the following snippet somewhere in the `Resources` section: 
+
+```
+  ECSTaskRole:
+      Type: AWS::IAM::Role
+      Properties:
+          AssumeRolePolicyDocument:
+              Statement:
+              - Effect: Allow
+                Principal:
+                   Service: [ecs-tasks.amazonaws.com]
+                Action: ['sts:AssumeRole']
+          Path: /
+          Policies:
+              - PolicyName: SSMMessagesPolicy
+                PolicyDocument:
+                  Statement:
+                      - Effect: Allow
+                        Action:
+                          - 'ssmmessages:CreateControlChannel'
+                          - 'ssmmessages:CreateDataChannel'
+                          - 'ssmmessages:OpenControlChannel'
+                          - 'ssmmessages:OpenDataChannel'
+                        Resource: '*'
+```
+
+Locate the line that says `TaskRoleArn: !Ref "AWS::NoValue"` and change it to `TaskRoleArn: !Ref 'ECSTaskRole'`
+
+Last but not list add the `{% if 'test' in service_instance.name %} EnableExecuteCommand: true {% endif %}` in the `Service` resource properties. It should look something like this when added (note how we are using Jinja to only the required parameter for the deployments of the `test` instances):  
+
+```
+  Service:
+    Type: AWS::ECS::Service
+    DependsOn: LoadBalancerRule
+    Properties:
+      {% if 'test' in service_instance.name %} EnableExecuteCommand: true {% endif %} 
+      ServiceName: '{{service.name}}_{{service_instance.name}}'
+```
+
+> again, there is a bit of naming convention here that needs to be agreed between the developer and the platform team. The developers know that when they create a service instance called `test` Proton will add a parameter to the ECS tasks that will allow developers to exec into them for debugging purposes. Note that the developer doesn't need to know anything about how to make it happen. 
+
+Now that you modified the service instance and pipeline properties, you can push the changes to GitHub. Proton should detect a new minor version that you can publish. That will become the new `recommended` version. 
+
+
+
+

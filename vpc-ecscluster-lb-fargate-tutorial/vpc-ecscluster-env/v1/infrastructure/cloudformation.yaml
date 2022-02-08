@@ -40,6 +40,7 @@ Resources:
       VpcId: !Ref 'VPC'
       CidrBlock: !FindInMap ['SubnetConfig', 'PublicTwo', 'CIDR']
       MapPublicIpOnLaunch: true
+
   VPCFlowLog:
     Type: AWS::EC2::FlowLog
     Properties:
@@ -64,7 +65,8 @@ Resources:
     Type: AWS::Logs::LogGroup
     Properties: 
       RetentionInDays: 7
-    # Setup networking resources for the public subnets. Containers
+  
+  # Setup networking resources for the public subnets. Containers
   # in the public subnets have public IP addresses and the routing table
   # sends network traffic via the internet gateway.
   InternetGateway:
