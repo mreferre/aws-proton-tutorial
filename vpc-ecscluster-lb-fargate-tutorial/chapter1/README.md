@@ -157,4 +157,4 @@ This is the new `production` endpoint:
 
 #### Conclusions
 
-This concludes the basic tutorial for configuring Proton. We have covered both templates registration as well as templates deployment (environment and services). If you want to explore more about the value of Proton, especially when it comes to day2 operations, move to the [next chapter](../chapter2/README.md) of this tutorial.  
+This concludes the basic tutorial for configuring Proton. We have covered both templates registration as well as templates deployment (environment and services). If you want to explore more about the value of Proton, especially when it comes to `Day 2` operations, move to the [next chapter](../chapter2/README.md) of this tutorial.  

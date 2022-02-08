@@ -114,14 +114,16 @@ Locate the `instance_infrastructure` CloudFormation template and add the followi
 
 Locate the line that says `TaskRoleArn: !Ref "AWS::NoValue"` and change it to `TaskRoleArn: !Ref 'ECSTaskRole'`
 
-Last but not list add the `{% if 'test' in service_instance.name %} EnableExecuteCommand: true {% endif %}` in the `Service` resource properties. It should look something like this when added (note how we are using Jinja to only the required parameter for the deployments of the `test` instances):  
+Last but not list add the `EnableExecuteCommand: true` in the `Service` resource properties. It should look something like this when added (note how we are using Jinja to only the required parameter for the deployments of the `test` instances):  
 
 ```
   Service:
     Type: AWS::ECS::Service
     DependsOn: LoadBalancerRule
     Properties:
-      {% if 'test' in service_instance.name %} EnableExecuteCommand: true {% endif %} 
+      {% if 'test' in service_instance.name %} 
+      EnableExecuteCommand: true 
+      {% endif %} 
       ServiceName: '{{service.name}}_{{service_instance.name}}'
 ```
 
@@ -153,7 +155,39 @@ Now you can update each of the service instances. Open the `test` instance detai
 
 ![test-service-instance-update](../../images/test-service-instance-update.png)
 
+Keep all the values and update it. 
+
+Go through the same process for the `production` instance. 
+
+If you want to check that the ability to exec into a container has only been activated for the test deployment and not for the production instance you can try to exec into both the ecs tasks and see what happens. You can explore the ECS console to gather the cluster names and task ids. Once you have them you can run the following tests. 
+
+Trying to exec into the task that belongs to the `test` instance:
+
+```
+$ aws ecs execute-command --region us-west-2 --cluster AWSProton-VPC-ECSCluster--cloudformation--ELCIZOMUBTAUNFR-ECSCluster-wkWkMoVgxQfH --task 209fac6ff22b44ee81d3fc0a4adcf375 --command bash --interactive
+
+The Session Manager plugin was installed successfully. Use the AWS CLI to start a session.
 
 
+Starting session with SessionId: ecs-execute-command-0f138402d3067db5a
+
+root@ip-10-0-0-53:/# ls 
+bin  boot  dev	etc  home  lib	lib64  managed-agents  media  mnt  opt	proc  root  run  sbin  srv  startup.sh	sys  tmp  usr  var
+root@ip-10-0-0-53:/# 
+```
+
+Trying to exec into the task that belongs to the `production` instance:
+
+```
+aws ecs execute-command --region us-west-2 --cluster AWSProton-VPC-ECSCluster--cloudformation--QIODXVFVTLWYDZQ-ECSCluster-uSgtWq2Ru85R --task 2a0a84162dcb4e7db111e780fc69d48a --command bash --interactive
+
+The Session Manager plugin was installed successfully. Use the AWS CLI to start a session.
 
 
+An error occurred (InvalidParameterException) when calling the ExecuteCommand operation: The execute command failed because execute command was not enabled when the task was run or the execute command agent isn’t running. Wait and try again or run a new task with execute command enabled and try again.
+```
+
+
+### Conclusions
+
+Congratulations, in this chapter you were able to get a better sense of the relationship between the platform admin and the developer for `Day 2` operations and, last but not least, a hint on the power of Jinja and the Proton rendering engine. 
