@@ -10,7 +10,7 @@ Proton has two main actors:
 > These two actors are mapped to two AWS managed IAM policies: `AWSProtonFullAccess` and `AWSProtonDeveloperAccess` (there is also a `AWSProtonReadOnlyAccess`).
 
 #### Why would you use Proton?  
-There are two set of reasons why customers find Proton useful. They are grouped by users profiles. Usually the larger the organization is the most value they can extract from the product.  
+There are two set of reasons why customers find Proton useful. They are grouped by user profiles. Usually the larger the organization is the most value they can extract from the product.  
 
 Platform admins use Proton because they can: 
 - create standard and versioned templates to better support their developers 
@@ -21,7 +21,7 @@ Platform admins use Proton because they can:
 Developers use Proton because they can:
 - deploy their application in self-service 
 - deploy their applications without being experts in AWS services
-- avoid to reinvent the wheel and re-use best practices (for security, availability, cost optimization) codified by the platform teams in the templates 
+- avoid reinventing the wheel and allowing re-use best practices (for security, availability, cost optimization) codified by the platform teams in the templates 
 - and more... 
 
 #### Is Proton a service catalog product? 
@@ -29,7 +29,7 @@ While Proton could act as a generic multi-purpose service catalog, Proton really
 
 - `Environments`: they represent shared infrastructure components that multiple services can potentially consume. Environments (templates) are defined by platform admins and are (typically) deployed by the platform admins. Think of VPCs, clusters, databases and so forth. 
 - `Services`: they represent application infrastructure components that embed the best practices developers can leverage. Services (templates) are defined by platform admins and are deployed by the developers. Think of Fargate services, Lambdas and so forth. 
-- `Pipelines`: they represent, well ... pipelines. Similarly to services, pipeline (templates) are defined by platform admins and are deployed by the developers along with the service. Pipelines are an optional object and the developer is allowed to "bring their own" pipeline if so they wish. 
+- `Pipelines`: they represent, well ... pipelines. Similarly to services, pipeline (templates) are defined by platform admins and are deployed by the developers along with the service. Pipelines are an optional object and the developer is allowed to "bring their own" pipeline if they so wish. 
 
 While the `environments` resemble the outputs of generic service catalog (because you can pretty much package any stack in an environment), `services` and `templates` are very application specific constructs. For example, a required parameter for a service is a code repository and if you don't supply one you can't deploy a service. 
 
@@ -56,7 +56,7 @@ Pizza&Ananas is a high quality restaurant chain that has decided to double down 
 
 To meet this goal, they are hiring a new team of developers. They also want to take this opportunity to bring more structure to the current development team(s) and introduce more standards re how their applications are being developed and deployed. Right now the developer team is small and there is really no governance or anything. When it comes to the undifferentiated heavy lifting of “getting the deployments right”, all the devs are reinventing the wheel thus wasting a lot of their time. To be fair, there are a couple of developers with previous DevOps experience that kind of act as advisors for the other developers. This is more tribal knowledge than anything structured though. Obviously, this is not a model that can scale well, also considering new people joining with mix of experiences. 
 
-The CIO at Pizza&Ananas, Beth, decided to invest into a small team (2 people) to set these standards and work on the undifferentiated heavy lifting of building everything that is needed to raise the bar on automation, efficiency, security, availability and all the non-functional requirements usually developers had to deal with so far. Beth is also particularly concerned about security exposures (there have been a couple of cases where their devs went very close to open S3 buckets publicly by mistake). Pizza&Ananas realizes that the amount of work to be done in that space is enormous but on the other hands their budget does not allow to build a larger team to tackle this problem. At the end of the day... their business is preparing great pizzas and not building developer portals. 
+The CIO at Pizza&Ananas, Beth, decided to invest into a small team (2 people) to set these standards and work on the undifferentiated heavy lifting of building everything that is needed to raise the bar on automation, efficiency, security, availability and all the non-functional requirements usually developers had to deal with so far. Beth is also particularly concerned about security exposures (there have been a couple of cases where their devs were very close to opening S3 buckets publicly by mistake). Pizza&Ananas realizes that the amount of work to be done in that space is enormous but on the other hands their budget does not allow to build a larger team to tackle this problem. At the end of the day... their business is preparing great pizzas and not building developer portals. 
 
 A few weeks later, Pizza&Ananas assembled the platform team. One of the original developers, Anna, that was “infrastructure savvy” transitioned into this team. She was one of the roaming devs dispensing suggestions on how to deploy on AWS and now this is her full time job. In addition to bringing excellent tech skills for the role, she also brings a great deal of history re “how things work at Outback”. Beth also hired John from one of Pizza&Ananas' biggest competitors. He has a great deal of experience building internal platforms and will partner with Anna to build one for Pizza&Ananas. 
 
@@ -83,7 +83,7 @@ Anna and John start to craft some high level tenets for the specific developer u
         * S3 bucket 
 * For these application and data services, the platform team function may require in the future to change some of the characteristics of these deployments. For example, the platform team may mandate that all S3 buckets need to be encrypted or the Postgres database high availability configuration need to be changed
     * ideally all these changes should be, as much as possible, made on-line on existing resources or on future deployments AND done in a way that is fully transparent to the developer (albeit the dev may be in control of when the change is being made) 
-* The platform team will need to have a way to allow certain developers (or teams) to have access to some services templates but no others. For example team A can deploy all data services but team B can only deploy DynamoDB tables (again this segmentation will need to be based on AD team/group membership)
+* The platform team will need to have a way to allow certain developers (or teams) to have access to some services templates but not others. For example team A can deploy all data services but team B can only deploy DynamoDB tables (again this segmentation will need to be based on AD team/group membership)
 * With the exception of the function and data services (which are all product-specific), the public and private web services products leveraged to build the template should be considered an implementation detail for the developer. In other words the platform team may decide to implement them with different products (e.g. ECS/Fargate Vs App Runner) without the developer even knowing
 * Ideally all services being deployed should be discoverable by name. For example, if a developer deploys a private micro-service with a particular name, another micro-service should be able to reference it by its name without having to do anything special. Alternatively, the services should be exposing/advertising their endpoints so that those can be imported into other services via an environment variable
 * Similarly, data services should be advertising their endpoints (Postgres endpoint, S3 bucket ARN or DDB table ARN) so that it can be imported into the micro-services applications when/if they need them
