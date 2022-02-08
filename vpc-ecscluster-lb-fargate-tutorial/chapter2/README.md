@@ -2,9 +2,11 @@
 
 In the previous chapter we discovered how a Proton admin could import templates and how Proton admin and developers can deploy environments and services. This is table stake for Proton but not where Proton shines. You start appreciating the value of Proton when you start considering how admins can maintain the deployments for day2 operations. This is what we will explore in this chapter. 
 
+> Important: a certain level of familiarity with editing CloudFormation templates is required for this chapter. 
+
 ### Updating the environment template [ PLATFORM ADMIN ]
 
-Let's say the platform administrator team has a new standard for VPC deployments that require enabling `VPC flow log`. This was not enabled in the original environment templates. 
+Let's imagine that the platform administrator team has a new compliance requirement for VPC deployments that necessitates enabling `VPC flow log`. This was not enabled in the original environment templates. 
 
 Open the CloudFormation template that represent the environment infrastructure and add the following YAML code right after the VPC and subnets definition: 
 
@@ -35,7 +37,7 @@ Open the CloudFormation template that represent the environment infrastructure a
       RetentionInDays: 7
 ```
 
-This will create a CloudWatch LogGroup and will configure the VPC to use it. Because this is not a breaking change to the VPC configuration we will update the template in the `v1` folder (this will result in a so called `minor version` change). Commit the change to the repository. 
+This will create a CloudWatch LogGroup and will configure the VPC to use it as its flow log destination. Because this is not a breaking change to the VPC configuration we will update the template in the `v1` folder (this will result in a so called `minor version` change). Please read [this documentation page](https://docs.aws.amazon.com/proton/latest/adminguide/ag-template-versions.html) for a better understanding of minor and major versions. Commit the change to the repository. 
 
 Because we have imported the template using `Git Sync`, Proton will discover the change in the template and will propose it as a `Draft`: 
 
@@ -46,7 +48,6 @@ Because we have imported the template using `Git Sync`, Proton will discover the
 Go ahead and `Publish` the draft. Your `recommended` version should become `1.3`.
 
 Note in the same environment template page you can see all environments (and their version) that have been originated from this template. This provides a good mechanism to track your deployments. 
-
 
 ### Updating the environments [ PLATFORM ADMIN ]
 
@@ -126,7 +127,25 @@ Last but not list add the `{% if 'test' in service_instance.name %} EnableExecut
 
 > again, there is a bit of naming convention here that needs to be agreed between the developer and the platform team. The developers know that when they create a service instance called `test` Proton will add a parameter to the ECS tasks that will allow developers to exec into them for debugging purposes. Note that the developer doesn't need to know anything about how to make it happen. 
 
-Now that you modified the service instance and pipeline properties, you can push the changes to GitHub. Proton should detect a new minor version that you can publish. That will become the new `recommended` version. 
+Now that you modified the service instance and pipeline properties, you can push the changes to GitHub. Proton should detect a new minor version that you can publish. That will become the new `recommended` version: 
+
+![service-template-minor-ver](../../images/service-template-minor-ver.png)
+
+The work of the platform admin team is done here! 
+
+### Updating the service [ DEVELOPER ]
+
+Now you are back as a developer. As you explore the service that you deployed, you notice something. Proton hints you that the administrator has made available a new (minor) version of the service template. You know this is going to introduce new operational improvements so you are eager to update your service to use the latest template. 
+
+> note you can't update the service as a whole to the new minor template. You need to individually update each instance and the pipeline. 
+
+We will start with the pipeline. Move to the `Pipeline` tab of your service, click the informational warning on your template and click `Update to recommended version`: 
+
+![pipeline-update](../../images/pipeline-update.png)
+
+Within a few minutes the pipeline should be updated. If you explore its layout you will note that now there is indeed a manual approval right before the deployment of the `production` instance:
+
+
 
 
 
