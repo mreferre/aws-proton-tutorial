@@ -36,7 +36,7 @@ Resources:
       RequiresCompatibilities:
         - FARGATE
       ExecutionRoleArn: '{{environment.outputs.ECSTaskExecutionRole}}'
-      TaskRoleArn: !Ref 'ECSTaskRole'
+      TaskRoleArn: !Ref "AWS::NoValue"
       ContainerDefinitions:
         - Name: '{{service_instance.name}}'
           Environment:
@@ -53,27 +53,6 @@ Resources:
               awslogs-group: '{{service.name}}/{{service_instance.name}}'
               awslogs-region: !Ref 'AWS::Region'
               awslogs-stream-prefix: '{{service.name}}/{{service_instance.name}}'
-  ECSTaskRole:
-      Type: AWS::IAM::Role
-      Properties:
-          AssumeRolePolicyDocument:
-              Statement:
-              - Effect: Allow
-                Principal:
-                   Service: [ecs-tasks.amazonaws.com]
-                Action: ['sts:AssumeRole']
-          Path: /
-          Policies:
-              - PolicyName: SSMMessagesPolicy
-                PolicyDocument:
-                  Statement:
-                      - Effect: Allow
-                        Action:
-                          - 'ssmmessages:CreateControlChannel'
-                          - 'ssmmessages:CreateDataChannel'
-                          - 'ssmmessages:OpenControlChannel'
-                          - 'ssmmessages:OpenDataChannel'
-                        Resource: '*'
   # The service_instance.inputs. The service is a resource which allows you to run multiple
   # copies of a type of task, and gather up their logs and metrics, as well
   # as monitor the number of running tasks and replace any that have crashed
@@ -81,9 +60,6 @@ Resources:
     Type: AWS::ECS::Service
     DependsOn: LoadBalancerRule
     Properties:
-      {% if 'test' in service_instance.name %} 
-      EnableExecuteCommand: true 
-      {% endif %}
       ServiceName: '{{service.name}}_{{service_instance.name}}'
       Cluster: '{{environment.outputs.ClusterName}}'
       LaunchType: FARGATE
