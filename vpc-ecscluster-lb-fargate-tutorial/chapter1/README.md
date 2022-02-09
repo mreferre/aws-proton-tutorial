@@ -86,7 +86,21 @@ To recap, as an admin, you created both the environment and the service template
 
 #### Configuring the CI/CD pipeline role [ PLATFORM ADMIN ]
 
-xxx 
+Before we configure the pipeline role we need to do a quick detour to explain why. There are two main roles we need to define when using Proton: the service role we have used to deploy the environment (you have already done it above) and the CI/CD pipeline role.
+
+> Please note that these roles are only used with the built-in provisioning mechanism (i.e. CFN). If you use the "Git provisioning" workflow (i.e. with Terraform) anything related to provisioning and pipeline roles needs to happen outside of Proton. Discuss these nuances is also outside of the scope of this tutorial. 
+
+As discussed above, the environment service role is the role that CFN will use to deploy resources. Proton creates this role in the console with an `AdministratorAccess` managed policy because it can't know upfront what a customer would like to deploy. This role is also used when you deploy services that are bound to a specific environment. That is, when you deploy a service to the `production` environment, the service resources will be deployed by CFN assuming the role that was associated to the `production` environment.
+
+Because the pipeline can potentially traverse multiple environments (and also does other things like building containers, pushing to ECR, etc) it requires a separate role if you want to scope them down. This role is not used directly but it's rather used to build sub-roles (defined in the pipeline CFN) and associated to the various stages of the pipeline. So the CI/CD pipeline role you specify needs to be able to create these roles (which in turns will actually deploy resources).
+
+> One important thing to note is that these sub-roles will not directly manipulate Proton services resources (e.g. they will not change task definitions etc). These pipeline sub-roles will only use the Proton `update-service` API to manipulate services and the role that is going to be used to actually change the resources is the service role that was used for the environment the service deploys to (see above).
+
+With all the background required out of the way you can now move to `Account settings` and create a new Pipeline service role called `ProtonPipelineServiceRole`: 
+
+![account-settings-pipeline-role](../../images/account-settings-pipeline-role.png)
+
+Ignore the `CI/CD pipeline repository` (which is only required for the "Git provisioning" workflows) and click `Save changes`. 
 
 #### Deploying the service [ DEVELOPER ]
 
