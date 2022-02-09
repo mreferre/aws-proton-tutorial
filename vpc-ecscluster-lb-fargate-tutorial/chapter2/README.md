@@ -6,9 +6,9 @@ In the previous chapter we discovered how a Proton admin could import templates 
 
 ### Updating the environment template [ PLATFORM ADMIN ]
 
-Let's imagine that the platform administrator team has a new compliance requirement for VPC deployments that necessitates enabling `VPC flow log`. This was not enabled in the original environment templates. 
+Let's imagine that the platform administrator team has a new compliance requirement for VPC deployments that necessitates enabling `VPC flow logs`. This was not enabled in the original environment templates. 
 
-Open the CloudFormation template that represent the environment infrastructure and add the following YAML code right after the VPC and subnets definition: 
+Open the CloudFormation template that defines the environment infrastructure and add the following YAML code right after the VPC and subnets definition: 
 
 ```
   VPCFlowLog:
@@ -63,7 +63,7 @@ You  Congratulations, you have just updated your first Proton environment by add
 
 ### Updating the service template [ PLATFORM ADMIN ]
 
-Now that we have updated both the environment template and the environments themselves, let's explore updating the services. Here is a situation that you, as a platform admin, may come across: you are getting requests from developers that they find it hard to debug their applications when they are running in the test environments (your policies do not allow you to enable exec'ing into containers in production but you can enable that for anything that is not production environments). Also, because of some incidents that have occurred over the last few weeks the business is requesting that all production deployments are gated by a manual approval from the business (this requires a change in the service pipeline). 
+Now that we have updated both the environment template and the environments themselves, let's explore updating the services. Here is a situation that you, as a platform admin, may come across: you are getting requests from developers that they find it hard to debug their applications when they are running in the test environments (your policies do not allow you to enable exec'ing into containers in production but you can enable that for anything that is not production environments). Also, because of some incidents that have occurred over the last few weeks, the business is requesting that all production deployments are gated by a manual approval from the business (this requires a change in the service pipeline). 
 
 First locate the `pipeline_infrastructure` CloudFormation template, navigate to the section where the pipeline `Actions` are declared and add the following text snippet between the action named `Build` and the action named `'Deploy-{{service_instance.name}}'`: 
 ```
