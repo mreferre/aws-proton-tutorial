@@ -125,6 +125,8 @@ Leave everything else at the defaults, click `Next` and at the summary page clic
 
 Be patient. Proton will first create the test and production infrastructure (Proton service instances), it will then create the pipeline, and eventually it will trigger the pipeline (which will take roughly 8-10 minutes to go through all the stages). The pipeline is configured to check for future changes on the application repository (the nginx custom application in the context of this tutorial). 
 
+For safety, the pipeline created for your service will not deploy the images automatically. When code build has finished building you should navigate to the two pipelines we created and approve the "Preproduction_Approval" step.
+
 > Important note on IAM roles: note that the developer does not need to specify an IAM role to assume for deploying the resources as part of the wizard. Proton will use the IAM roles the administrator has specified when deploying the environments these service instances bind to.   
 
 This is how the `Overview` tab of your service should look like: 
