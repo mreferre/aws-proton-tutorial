@@ -67,7 +67,8 @@ You  Congratulations, you have just updated your first Proton environment by add
 
 Now that we have updated both the environment template and the environments themselves, let's explore updating the services. Here is a situation that you, as a platform admin, may come across: you are getting requests from developers that they find it hard to debug their applications when they are running in the test environments (your policies do not allow you to enable exec'ing into containers in production but you can enable that for anything that is not production environments). Also, because of some incidents that have occurred over the last few weeks, the business is requesting that all production deployments are gated by a manual approval from the business (this requires a change in the service pipeline). 
 
-First locate the `pipeline_infrastructure` CloudFormation template, navigate to the section where the pipeline `Actions` are declared and add the following text snippet between the action named `Build` and the action named `'Deploy-{{service_instance.name}}'`: 
+First locate the `pipeline_infrastructure` CloudFormation template, navigate to the section where the pipeline `Actions` are declared for each service instance (this is done via Jinja within the `{%- for service_instance in service_instances %}` block). It doesn't matter if it goes before or after the action with `Name: Deploy`, our run order parameter specifies that the approval step should happen first.
+
 ```
 {% if 'production' in service_instance.name %}
         - Actions:
@@ -78,7 +79,7 @@ First locate the `pipeline_infrastructure` CloudFormation template, navigate to 
                 Version: '1'
               InputArtifacts: []
               Name: Approval
-              RunOrder: 1
+              RunOrder: 0
           Name: Preproduction_Approval
 {% endif %}
 ``` 
