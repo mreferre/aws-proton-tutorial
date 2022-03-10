@@ -65,9 +65,9 @@ You  Congratulations, you have just updated your first Proton environment by add
 
 ### Updating the service template [ PLATFORM ADMIN ]
 
-Now that we have updated both the environment template and the environments themselves, let's explore updating the services. Here is a situation that you, as a platform admin, may come across: you are getting requests from developers that they find it hard to debug their applications when they are running in the test environments (your policies do not allow you to enable exec'ing into containers in production but you can enable that for anything that is not production environments). 
+Now that we have updated both the environment template and the environments themselves, let's explore updating the services. Here is a situation that you, as a platform admin, may come across: 
 
-Also, developers are annoyed that they have to manually approve changes for our test environment. Let's use the magic of Proton's Jinja engine to provide this option to our service team.
+Developers are annoyed that they have to manually approve changes for our test environment. We can use the magic of Proton's Jinja engine to provide this option to our service team.
 
 First locate the `pipeline_infrastructure` CloudFormation template, navigate to the section where the pipeline `Actions` are declared for each service instance, and add an if statement around the `Preproduction_Approval` action. The result should look like the snippet below:
 
@@ -89,7 +89,9 @@ There is quite a bit of Jinja magic going on here. Here is what's happening. You
 
 > Note that, in this situation, there is a bit of naming convention here that needs to be agreed between the developer and the platform team. The developers know that when they create an instance called `production` Proton will add a manual approval gate to the pipeline before deploying it. Depending on what you want to achieve, it may be possible to leverage variables that refers to `environments` names rather than `service instance` names to make it fully transparent for the user and allowing the platform team to enforce behaviour further.  
 
-Now let's enable [ECS exec](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-exec.html) for the service itself (the following changes are required to enable the ECS Exec feature). 
+You are also getting complaints from developers that they find it hard to debug their applications when they are running in the test environments (your policies do not allow you to enable exec'ing into containers in production but you can enable that for anything that is not production environments). 
+
+We can again use Proton's template rendering engine to enable [ECS exec](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-exec.html) for the test environment while leaving it disabled for production. 
 
 Locate the `instance_infrastructure` CloudFormation template and add the following snippet somewhere in the `Resources` section: 
 
