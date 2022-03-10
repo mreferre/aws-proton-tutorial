@@ -596,7 +596,6 @@ Resources:
               RunOrder: 1
           Name: Build 
 {%- for service_instance in service_instances %}
-{% if 'Prod' in service_instance.name %}
         - Actions:
             - ActionTypeId:
                 Category: Approval
@@ -607,7 +606,6 @@ Resources:
               Name: Approval
               RunOrder: 0
           Name: Preproduction_Approval
-{% endif %}
         - Actions:
             - ActionTypeId:
                 Category: Build
