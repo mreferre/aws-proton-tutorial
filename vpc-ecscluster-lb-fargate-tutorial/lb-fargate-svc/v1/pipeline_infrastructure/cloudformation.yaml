@@ -596,7 +596,7 @@ Resources:
               RunOrder: 1
           Name: Build 
 {%- for service_instance in service_instances %}
-{% if 'Tu' in service_instance.name %}
+{% if 'Prod' in service_instance.name %}
         - Actions:
             - ActionTypeId:
                 Category: Approval
@@ -605,7 +605,7 @@ Resources:
                 Version: '1'
               InputArtifacts: []
               Name: Approval
-              RunOrder: 1
+              RunOrder: 0
           Name: Preproduction_Approval
 {% endif %}
         - Actions:
@@ -624,7 +624,7 @@ Resources:
                 Fn::GetAtt:
                   - PipelineDeployCodePipelineActionRole
                   - Arn
-              RunOrder: 2
+              RunOrder: 1
           Name: 'Deploy-{{service_instance.name}}'
 {%- endfor %}
       ArtifactStore:
