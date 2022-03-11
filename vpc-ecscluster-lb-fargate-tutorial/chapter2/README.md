@@ -81,7 +81,7 @@ First locate the `pipeline_infrastructure` CloudFormation template, navigate to 
                 Version: '1'
               InputArtifacts: []
               Name: Approval
-              RunOrder: 0
+              RunOrder: 1
           Name: Preproduction_Approval
 {% endif %}
 ``` 
