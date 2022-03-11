@@ -596,17 +596,7 @@ Resources:
               RunOrder: 1
           Name: Build 
 {%- for service_instance in service_instances %}
-        - Actions:
-            - ActionTypeId:
-                Category: Approval
-                Owner: AWS
-                Provider: Manual
-                Version: '1'
-              InputArtifacts: []
-              Name: Approval
-              RunOrder: 0
-          Name: Preproduction_Approval
-        - Actions:
+        - Actions: # TODO: Add a manual approval step for all Prod environments before this action
             - ActionTypeId:
                 Category: Build
                 Owner: AWS
