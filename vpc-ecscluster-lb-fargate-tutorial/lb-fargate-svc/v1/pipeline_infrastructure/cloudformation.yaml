@@ -612,7 +612,7 @@ Resources:
                 Fn::GetAtt:
                   - PipelineDeployCodePipelineActionRole
                   - Arn
-              RunOrder: 1
+              RunOrder: 2
           Name: 'Deploy-{{service_instance.name}}'
 {%- endfor %}
       ArtifactStore:
