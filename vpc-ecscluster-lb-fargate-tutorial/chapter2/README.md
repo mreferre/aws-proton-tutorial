@@ -72,7 +72,7 @@ Business is requesting that all production deployments are gated by a manual app
 First locate the `pipeline_infrastructure` CloudFormation template, navigate to the section where the pipeline `Actions` are declared for each service instance, and add the following `Preproduction_Approval` action (there's a `TODO` comment to help you location the right place to make this change). The result should look like the snippet below:
 
 ```
-{% if 'production' in environment.name %}
+{% if 'Production' in environment.name %}
         - Actions:
             - ActionTypeId:
                 Category: Approval
