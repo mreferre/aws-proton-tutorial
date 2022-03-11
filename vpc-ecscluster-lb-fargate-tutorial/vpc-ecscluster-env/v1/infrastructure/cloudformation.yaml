@@ -72,7 +72,7 @@ Resources:
     Properties:
       SubnetId: !Ref PublicSubnetTwo
       RouteTableId: !Ref PublicRouteTable
-      
+
   # ECS Resources
   ECSCluster:
     Type: AWS::ECS::Cluster
