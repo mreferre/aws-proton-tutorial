@@ -67,12 +67,12 @@ You  Congratulations, you have just updated your first Proton environment by add
 
 Now that we have updated both the environment template and the environments themselves, let's explore updating the services. Here is a situation that you, as a platform admin, may come across: 
 
-Developers are annoyed that they have to manually approve changes for our test environment. We can use the magic of Proton's Jinja engine to provide this option to our service team.
+Business is requesting that all production deployments are gated by a manual approval from the business (this requires a change in the service pipeline). We still want to automatically deploy changes in our test stage though, so we need to use Proton's template rendering engine to create different behaviors based on the environment.
 
-First locate the `pipeline_infrastructure` CloudFormation template, navigate to the section where the pipeline `Actions` are declared for each service instance, and add an if statement around the `Preproduction_Approval` action. The result should look like the snippet below:
+First locate the `pipeline_infrastructure` CloudFormation template, navigate to the section where the pipeline `Actions` are declared for each service instance, and add the following `Preproduction_Approval` action (there's a `TODO` comment to help you location the right place to make this change). The result should look like the snippet below:
 
 ```
-{% if 'production' in service_instance.name %}
+{% if 'production' in environment.name %}
         - Actions:
             - ActionTypeId:
                 Category: Approval
@@ -85,9 +85,9 @@ First locate the `pipeline_infrastructure` CloudFormation template, navigate to 
           Name: Preproduction_Approval
 {% endif %}
 ``` 
-There is quite a bit of Jinja magic going on here. Here is what's happening. You just placed an action inside a `for` loop (`{%- for service_instance in service_instances %}`) that basically create a `Deploy` action per each service instance you created. What you added above is a piece of code that, basically, says "if the instance_name is called `production` then add a pipeline action that is a manual approval. The developer knows that when they create an instance called `production` Proton will add a manual approval gate. 
+There is quite a bit of Jinja magic going on here. Here is what's happening. You just placed an action inside a `for` loop (`{%- for service_instance in service_instances %}`) that basically create a `Deploy` action per each service instance you created. What you added above is a piece of code that, basically, says "if the environment is called `production` then add a pipeline action that is a manual approval. The developer knows that when they create an instance in an environment called `production` Proton will add a manual approval gate. 
 
-> Note that, in this situation, there is a bit of naming convention here that needs to be agreed between the developer and the platform team. The developers know that when they create an instance called `production` Proton will add a manual approval gate to the pipeline before deploying it. Depending on what you want to achieve, it may be possible to leverage variables that refers to `environments` names rather than `service instance` names to make it fully transparent for the user and allowing the platform team to enforce behaviour further.  
+By referencing the environment name, the platform team is able to enforce best practices for service teams.
 
 You are also getting complaints from developers that they find it hard to debug their applications when they are running in the test environments (your policies do not allow you to enable exec'ing into containers in production but you can enable that for anything that is not production environments). 
 
