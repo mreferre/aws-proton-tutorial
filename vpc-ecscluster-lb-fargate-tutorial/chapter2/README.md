@@ -67,7 +67,7 @@ You  Congratulations, you have just updated your first Proton environment by add
 
 Now that we have updated both the environment template and the environments themselves, let's explore updating the services. Here is a situation that you, as a platform admin, may come across: 
 
-Business is requesting that all production deployments are gated by a manual approval from the business (this requires a change in the service pipeline). We still want to automatically deploy changes in our test stage though, so we need to use Proton's template rendering engine to create different behaviors based on the environment.
+Business is requesting that all production deployments are gated by a manual approval to prevent changed from accidentally flowing to production (this requires a change in the service pipeline). We still want to automatically deploy changes in our test stage though, so we need to use Proton's template rendering engine to create different behaviors based on the environment.
 
 First locate the `pipeline_infrastructure` CloudFormation template, navigate to the section where the pipeline `Actions` are declared for each service instance, and add the following `Preproduction_Approval` action (there's a `TODO` comment to help you location the right place to make this change). The result should look like the snippet below:
 
