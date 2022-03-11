@@ -133,7 +133,7 @@ Resources:
             - '{{environment.outputs.ClusterName}}'
             - '{{service.name}}_{{service_instance.name}}'
       MinCapacity: 1
-      MaxCapacity: 5
+      MaxCapacity: 10
       RoleARN: !Sub arn:aws:iam::${AWS::AccountId}:role/aws-service-role/ecs.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_ECSService
 
   # Create scaling policies for the service
