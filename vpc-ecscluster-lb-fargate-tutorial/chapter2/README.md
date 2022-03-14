@@ -133,7 +133,6 @@ Last but not least add the `EnableExecuteCommand: true` in the `Service` resourc
       {% endif %} 
       ServiceName: '{{service.name}}_{{service_instance.name}}'
 ```
-> As you may have noticed here we are taking a different approach to allow for `exec`ing into containers. While for the pipeline developers could own their destiny related to where they want the manual approval stage, for this feature the platform team needs to have stricter control (e.g. they need to make sure that `exec` is only enabled as a function of the environment name - which they control - and not simply of the service instance name - which devs control- ). So the Jinja check this time is done at the `environment.name` level. 
 
 Now that you modified the service instance and pipeline properties, you can push the changes to GitHub. Proton should detect a new minor version that you can publish. That will become the new `recommended` version: 
 
