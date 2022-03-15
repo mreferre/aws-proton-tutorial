@@ -68,7 +68,11 @@ This is where the Jinja magic starts to happen. You are asked to customize the p
 
 The `deployment status` will be `in progress` for a little while and then will report `Succeeded`. 
 
-Go through the `Create environment` workflow once more and configure a new environment called `VPC-ECSCluster-Env-Production`. This time you can pick the previously created IAM service role. 
+Go through the `Create environment` workflow once more and configure a new environment called `VPC-ECSCluster-Env-Production`. 
+
+> Note: For this tutorial it is important that your environment contains the string `Production` (case sensitive). We will be using that in Chapter 2.
+
+This time you can pick the previously created IAM service role. 
 
 At the end of these two workflows you should see your environments ready: 
 

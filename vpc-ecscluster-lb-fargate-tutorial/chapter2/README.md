@@ -65,11 +65,14 @@ You  Congratulations, you have just updated your first Proton environment by add
 
 ### Updating the service template [ PLATFORM ADMIN ]
 
-Now that we have updated both the environment template and the environments themselves, let's explore updating the services. Here is a situation that you, as a platform admin, may come across: you are getting requests from developers that they find it hard to debug their applications when they are running in the test environments (your policies do not allow you to enable exec'ing into containers in production but you can enable that for anything that is not production environments). Also, because of some incidents that have occurred over the last few weeks, the business is requesting that all production deployments are gated by a manual approval from the business (this requires a change in the service pipeline). 
+Now that we have updated both the environment template and the environments themselves, let's explore updating the services. Here is a situation that you, as a platform admin, may come across: 
 
-First locate the `pipeline_infrastructure` CloudFormation template, navigate to the section where the pipeline `Actions` are declared and add the following text snippet between the action named `Build` and the action named `'Deploy-{{service_instance.name}}'`: 
+Business is requesting that all production deployments are gated by a manual approval to prevent changed from accidentally flowing to production (this requires a change in the service pipeline). We still want to automatically deploy changes in our test stage though, so we need to use Proton's template rendering engine to create different behaviors based on the environment.
+
+First locate the `pipeline_infrastructure` CloudFormation template, navigate to the section where the pipeline `Actions` are declared for each service instance, and add the following `Preproduction_Approval` action (there's a `TODO` comment to help you location the right place to make this change). The result should look like the snippet below:
+
 ```
-{% if 'production' in service_instance.name %}
+{% if 'Production' in environment.name %}
         - Actions:
             - ActionTypeId:
                 Category: Approval
@@ -82,11 +85,13 @@ First locate the `pipeline_infrastructure` CloudFormation template, navigate to 
           Name: Preproduction_Approval
 {% endif %}
 ``` 
-There is quite a bit of Jinja magic going on here. Here is what's happening. You just placed an action inside a `for` loop (`{%- for service_instance in service_instances %}`) that basically create a `Deploy` action per each service instance you created. What you added above is a piece of code that, basically, says "if the instance_name is called `production` then add a pipeline action that is a manual approval. The developer knows that when they create an instance called `production` Proton will add a manual approval gate. 
+There is quite a bit of Jinja magic going on here. Here is what's happening. You just placed an action inside a `for` loop (`{%- for service_instance in service_instances %}`) that basically create a `Deploy` action per each service instance you created. What you added above is a piece of code that, basically, says "if the environment is called `production` then add a pipeline action that is a manual approval. The developer knows that when they create an instance in an environment called `production` Proton will add a manual approval gate. 
 
-> Note that, in this situation, there is a bit of naming convention here that needs to be agreed between the developer and the platform team. The developers know that when they create an instance called `production` Proton will add a manual approval gate to the pipeline before deploying it. Depending on what you want to achieve, it may be possible to leverage variables that refers to `environments` names rather than `service instance` names to make it fully transparent for the user and allowing the platform team to enforce behaviour further.  
+By referencing the environment name, the platform team is able to enforce best practices for service teams.
 
-Now let's enable [ECS exec](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-exec.html) for the service itself (the following changes are required to enable the ECS Exec feature). 
+You are also getting complaints from developers that they find it hard to debug their applications when they are running in the test environments (your policies do not allow you to enable exec'ing into containers in production but you can enable that for anything that is not production environments). 
+
+We can again use Proton's template rendering engine to enable [ECS exec](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-exec.html) for the test environment while leaving it disabled for production. 
 
 Locate the `instance_infrastructure` CloudFormation template and add the following snippet somewhere in the `Resources` section: 
 
@@ -128,7 +133,6 @@ Last but not least add the `EnableExecuteCommand: true` in the `Service` resourc
       {% endif %} 
       ServiceName: '{{service.name}}_{{service_instance.name}}'
 ```
-> As you may have noticed here we are taking a different approach to allow for `exec`ing into containers. While for the pipeline developers could own their destiny related to where they want the manual approval stage, for this feature the platform team needs to have stricter control (e.g. they need to make sure that `exec` is only enabled as a function of the environment name - which they control - and not simply of the service instance name - which devs control- ). So the Jinja check this time is done at the `environment.name` level. 
 
 Now that you modified the service instance and pipeline properties, you can push the changes to GitHub. Proton should detect a new minor version that you can publish. That will become the new `recommended` version: 
 

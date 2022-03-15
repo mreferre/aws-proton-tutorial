@@ -596,7 +596,7 @@ Resources:
               RunOrder: 1
           Name: Build 
 {%- for service_instance in service_instances %}
-        - Actions:
+        - Actions: # TODO: Add a manual approval step for all Prod environments before this action
             - ActionTypeId:
                 Category: Build
                 Owner: AWS
@@ -612,7 +612,7 @@ Resources:
                 Fn::GetAtt:
                   - PipelineDeployCodePipelineActionRole
                   - Arn
-              RunOrder: 1
+              RunOrder: 2
           Name: 'Deploy-{{service_instance.name}}'
 {%- endfor %}
       ArtifactStore:
