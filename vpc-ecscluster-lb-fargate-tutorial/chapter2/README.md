@@ -69,10 +69,10 @@ Now that we have updated both the environment template and the environments them
 
 Business is requesting that all production deployments are gated by a manual approval to prevent changed from accidentally flowing to production (this requires a change in the service pipeline). We still want to automatically deploy changes in our test stage though, so we need to use Proton's template rendering engine to create different behaviors based on the environment.
 
-First locate the `pipeline_infrastructure` CloudFormation template, navigate to the section where the pipeline `Actions` are declared for each service instance, and add the following `Preproduction_Approval` action (there's a `TODO` comment to help you location the right place to make this change). The result should look like the snippet below:
+First locate the `pipeline_infrastructure` CloudFormation template, navigate to the section where the pipeline `Actions` are declared for each service instance, and add the `Preproduction_Approval` action below. This new action needs to be added after the start of the loop (`{%- for service_instance in service_instances %}`) and before the action named `'Deploy-{{service_instance.name}}'`. There's a `TODO` comment in the pipeline CFN template to help you locate the right place to make this change.
 
 ```
-{% if 'Production' in environment.name %}
+{% if 'Production' in service_instance.environment.name %}
         - Actions:
             - ActionTypeId:
                 Category: Approval
@@ -85,6 +85,8 @@ First locate the `pipeline_infrastructure` CloudFormation template, navigate to 
           Name: Preproduction_Approval
 {% endif %}
 ``` 
+> This action needs to be added after the start of the loop (`{%- for service_instance in service_instances %}`) and before the action named `'Deploy-{{service_instance.name}}'`.
+
 There is quite a bit of Jinja magic going on here. Here is what's happening. You just placed an action inside a `for` loop (`{%- for service_instance in service_instances %}`) that basically create a `Deploy` action per each service instance you created. What you added above is a piece of code that, basically, says "if the environment is called `production` then add a pipeline action that is a manual approval. The developer knows that when they create an instance in an environment called `production` Proton will add a manual approval gate. 
 
 By referencing the environment name, the platform team is able to enforce best practices for service teams.
